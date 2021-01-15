@@ -7,7 +7,6 @@
     <tr>
       <th>Nick name</th>
       <th>Department</th>
-      <th>Deleted at</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -17,7 +16,6 @@
       <tr>
         <td><%= employee.nick_name %></td>
         <td><%= employee.department %></td>
-        <td><%= employee.deleted_at %></td>
         <td><%= link_to 'Show', employee %></td>
         <td><%= link_to 'Edit', edit_employee_path(employee) %></td>
         <td><%= link_to 'Destroy', employee, method: :delete, data: { confirm: 'Are you sure?' } %></td>
