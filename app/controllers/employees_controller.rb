@@ -5,7 +5,7 @@ class EmployeesController < ApplicationController
 
   # GET /employees
   def index
-    @employees = Employee.all
+    @employees = Employee.active
   end
 
   # GET /employees/1
@@ -41,7 +41,7 @@ class EmployeesController < ApplicationController
 
   # DELETE /employees/1
   def destroy
-    @employee.destroy
+    EmployeeTermination.new(@employee).execute
     redirect_to employees_url, notice: 'Employee was successfully destroyed.'
   end
 
