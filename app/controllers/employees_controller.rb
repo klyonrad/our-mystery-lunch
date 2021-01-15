@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class EmployeesController < ApplicationController
-  before_action :set_employee, only: [:show, :edit, :update, :destroy]
+  before_action :set_employee, only: %i[show edit update destroy]
 
   # GET /employees
   def index
@@ -9,8 +9,7 @@ class EmployeesController < ApplicationController
   end
 
   # GET /employees/1
-  def show
-  end
+  def show; end
 
   # GET /employees/new
   def new
@@ -18,8 +17,7 @@ class EmployeesController < ApplicationController
   end
 
   # GET /employees/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /employees
   def create
