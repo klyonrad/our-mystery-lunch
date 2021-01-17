@@ -22,6 +22,7 @@ gem 'turbolinks', '~> 5'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
+gem 'faker', require: false
 gem 'rexml'
 
 group :development, :test do
