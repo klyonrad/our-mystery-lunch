@@ -55,4 +55,16 @@ RSpec.describe 'Employee management', type: :system do
     find('input[name="commit"]').click
     expect(page).to have_content 'prohibited this employee from being saved'
   end
+
+  example 'user delets employee' do
+    create(:employee, nick_name: 'John Doe', department: 'sales')
+    visit employees_path
+    expect(page).to have_content 'Destroy'
+    accept_confirm 'Are you sure?' do
+      click_on 'Destroy'
+    end
+
+    expect(page).to have_content 'Employee was successfully destroyed.'
+    expect(page).not_to have_content 'John Doe'
+  end
 end

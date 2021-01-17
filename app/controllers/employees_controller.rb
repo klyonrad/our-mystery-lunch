@@ -1,16 +1,15 @@
 # frozen_string_literal: true
 
 class EmployeesController < ApplicationController
-  before_action :set_employee, only: [:show, :edit, :update, :destroy]
+  before_action :set_employee, only: %i[show edit update destroy]
 
   # GET /employees
   def index
-    @employees = Employee.all
+    @employees = Employee.active
   end
 
   # GET /employees/1
-  def show
-  end
+  def show; end
 
   # GET /employees/new
   def new
@@ -18,8 +17,7 @@ class EmployeesController < ApplicationController
   end
 
   # GET /employees/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /employees
   def create
@@ -43,7 +41,7 @@ class EmployeesController < ApplicationController
 
   # DELETE /employees/1
   def destroy
-    @employee.destroy
+    EmployeeTermination.new(@employee).execute
     redirect_to employees_url, notice: 'Employee was successfully destroyed.'
   end
 
@@ -56,6 +54,6 @@ class EmployeesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def employee_params
-    params.require(:employee).permit(:nick_name, :department, :deleted_at)
+    params.require(:employee).permit(:nick_name, :department)
   end
 end
