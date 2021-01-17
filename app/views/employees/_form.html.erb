@@ -19,9 +19,7 @@
   <div class="field">
     <%= form.label :department %>
     <%= form.select :department,
-                    options_for_select(
-                      %w[operations sales marketing risk management finance HR development data]
-                    ) %>
+                    options_for_select(Employee::DEPARTMENTS) %>
   </div>
 
   <div class="actions">
