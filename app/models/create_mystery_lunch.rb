@@ -1,12 +1,19 @@
 # frozen_string_literal: true
 
 class CreateMysteryLunch
-  def initialize(employees, year: Time.current.year, month: Time.current.month)
+  def initialize(employees, year: Time.current.year, month: Time.current.month, lunch_repo: LunchPlan)
     @given_employees = employees
     @year = year
     @month = month
-    @remaining_partner_pool = @given_employees.shuffle # increase randomness and leaven given employees untouched
+    @lunch_repo = lunch_repo
+    @remaining_partner_pool = @given_employees.shuffle # increase randomness and leave given employees untouched
     @lunches = []
+  end
+
+  # @return [Lunch]
+  def make_new_lunch_plan
+    select_lunch_partners
+    @lunch_repo.store_lunch_plan(@lunches)
   end
 
   def select_lunch_partners

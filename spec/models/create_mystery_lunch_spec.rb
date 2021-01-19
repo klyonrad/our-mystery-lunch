@@ -64,3 +64,22 @@ describe CreateMysteryLunch, '#select_lunch_partners' do
     end
   end
 end
+
+describe CreateMysteryLunch, '#make_new_lunch_plan' do
+  subject(:result) do
+    described_class.new(employees, lunch_repo: lunch_repo).make_new_lunch_plan
+  end
+
+  let(:employees) do
+    build_stubbed_list(:employee, 6)
+  end
+  let(:lunch_repo) do
+    class_double('LunchPlan')
+  end
+
+  it 'calls the persist method of given repo' do
+    expect(lunch_repo).to receive(:store_lunch_plan)
+
+    result
+  end
+end
