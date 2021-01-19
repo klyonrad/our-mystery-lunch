@@ -1,2 +1,12 @@
+AllCops:
+  NewCops: enable
+
 Style/Documentation:
   Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/MethodLength:
+  Max: 15
