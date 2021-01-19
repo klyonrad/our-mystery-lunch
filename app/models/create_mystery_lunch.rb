@@ -11,18 +11,30 @@ class CreateMysteryLunch
 
   def select_lunch_partners
     while @remaining_partner_pool.any?
-      new_lunch_couple = @remaining_partner_pool.sample(2)
-      new_lunch = Lunch.new(
-        lunch_participations_attributes: [
-          { employee: new_lunch_couple.first },
-          { employee: new_lunch_couple.second }
-        ]
-      )
-      @lunches.append(new_lunch)
-      @remaining_partner_pool.delete(new_lunch_couple.first)
-      @remaining_partner_pool.delete(new_lunch_couple.second)
+      amount_of_lunch_participants =
+        if @remaining_partner_pool.size == 3
+          3
+        else
+          2
+        end
+      new_lunch_participants = @remaining_partner_pool.sample(amount_of_lunch_participants)
+      @lunches.append(lunch_for_employees(new_lunch_participants))
+      new_lunch_participants.each do |employee|
+        @remaining_partner_pool.delete(employee)
+      end
     end
 
     @lunches
+  end
+
+  private
+
+  def lunch_for_employees(new_lunch_participants)
+    lunch_participations = new_lunch_participants.map do |employee|
+      { employee: employee }
+    end
+    Lunch.new(
+      lunch_participations_attributes: lunch_participations
+    )
   end
 end
