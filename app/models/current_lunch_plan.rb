@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 class CurrentLunchPlan
-  def initialize
+  def initialize(lunch_repo: LunchPlan, random_lunch_generator: CreateMysteryLunch)
     timestamp = Time.current
     @year = timestamp.year
     @month = timestamp.month
+    @lunch_repo = lunch_repo
+    @random_lunch_generator_klass = random_lunch_generator
   end
 
   def view_or_create
@@ -13,7 +15,7 @@ class CurrentLunchPlan
   end
 
   def already_created?
-    LunchPlan.exists_for_month?(@year, @month)
+    @lunch_repo.exists_for_month?(@year, @month)
   end
 
   private
@@ -23,6 +25,6 @@ class CurrentLunchPlan
   end
 
   def generate_new_plan
-    puts 'Generating....'
+    @random_lunch_generator_klass.new(Employee.active).make_new_lunch_plan
   end
 end
