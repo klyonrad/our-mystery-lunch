@@ -34,6 +34,7 @@ class CreateMysteryLunch
       { employee: employee }
     end
     Lunch.new(
+      consumed_after: Date.new(@year, @month, 1),
       lunch_participations_attributes: lunch_participations
     )
   end

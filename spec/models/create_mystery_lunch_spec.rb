@@ -4,8 +4,11 @@ require 'rails_helper'
 
 describe CreateMysteryLunch, '#select_lunch_partners' do
   subject(:result) do
-    described_class.new(employees).select_lunch_partners
+    described_class.new(employees, year: year, month: month).select_lunch_partners
   end
+  def year = 2020
+
+  def month = 12
 
   context 'given an even amount of employees' do
     let(:employees) do
@@ -44,6 +47,20 @@ describe CreateMysteryLunch, '#select_lunch_partners' do
       result_with_three_employees = result.select { |lunch| lunch.employees.size >= 3 }
 
       expect(result_with_three_employees.length).to eq(1)
+    end
+  end
+
+  context 'given a year and a month' do
+    let(:employees) do
+      build_stubbed_list(:employee, 4)
+    end
+
+    specify 'all lunches start on first day of the given month' do
+      start_dates_from_result = result.map(&:consumed_after)
+
+      expect(start_dates_from_result.map(&:year).all? { |result_month| result_month == month })
+      expect(start_dates_from_result.map(&:month).all? { |result_month| result_month == month })
+      expect(start_dates_from_result.map(&:day).all? { |result_month| result_month == 1 })
     end
   end
 end
