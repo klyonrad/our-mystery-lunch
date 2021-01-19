@@ -39,4 +39,39 @@ describe LunchPlan do
       it { is_expected.to be_truthy }
     end
   end
+
+  describe '.store_lunch_plan' do
+    context 'when some employees exist' do
+      let(:employees) do
+        [create_list(:employee, 2), create_list(:employee, 2)]
+      end
+
+      it 'stores the given lunches into databases' do
+        lunches = employees.map do |employee_tuple|
+          build(:lunch,
+                lunch_participations_attributes: [
+                  { employee: employee_tuple.first },
+                  { employee: employee_tuple.second }
+                ])
+        end
+        result = described_class.store_lunch_plan(lunches)
+
+        expect(result.all?(&:persisted?)).to be_truthy
+        expect(Lunch.all.count).to eq(2)
+      end
+
+      it 'returns the saved lunches as array' do
+        lunches = employees.map do |employee_tuple|
+          build(:lunch,
+                lunch_participations_attributes: [
+                  { employee: employee_tuple.first },
+                  { employee: employee_tuple.second }
+                ])
+        end
+        result = described_class.store_lunch_plan(lunches)
+
+        expect(result.flat_map(&:employees)).to match_array(employees.flatten)
+      end
+    end
+  end
 end
