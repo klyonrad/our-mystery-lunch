@@ -9,6 +9,7 @@ class CurrentLunchPlan
     @random_lunch_generator_klass = random_lunch_generator
   end
 
+  # @return [Lunch]
   def view_or_create
     generate_new_plan unless already_created?
     show_lunches
@@ -21,7 +22,7 @@ class CurrentLunchPlan
   private
 
   def show_lunches
-    'Here is the mystery lunch plan!'
+    @lunch_repo.lunches_in_month(@year, @month)
   end
 
   def generate_new_plan

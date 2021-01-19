@@ -2,6 +2,10 @@
 
 # Serves as repository
 class LunchPlan
+  def self.lunches_in_month(year, month)
+    Lunch.includes(lunch_participations: :employee).where(consumed_after: Date.new(year, month)..)
+  end
+
   def self.exists_for_month?(year, month)
     Lunch.where(consumed_after: Date.new(year, month)..).any?
   end
@@ -12,6 +16,4 @@ class LunchPlan
       lunches.each(&:save!)
     end
   end
-
-  # def lunches_in_month(year, month)
 end

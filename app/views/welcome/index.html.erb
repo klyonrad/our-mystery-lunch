@@ -5,6 +5,10 @@
   This is the current mystery lunch plan
 </h2>
 
-<p>
-  <%= @lunch_plan %>
-</p>
+<ul>
+  <% @lunch_plan.each do |lunch| %>
+    <li>
+      <%= lunch.employees_text %>
+    </li>
+  <% end %>
+</ul>

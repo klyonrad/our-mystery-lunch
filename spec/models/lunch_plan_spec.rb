@@ -3,6 +3,43 @@
 require 'rails_helper'
 
 describe LunchPlan do
+  describe '.lunches_in_month' do
+    subject(:result) { described_class.lunches_in_month(year, month) }
+
+    def year = 2020
+
+    def month = 12
+
+    context 'when no lunches are created yet' do
+      it { is_expected.to be_empty }
+    end
+
+    context 'when one lunch exists for previous month and no lunch for the requested month exists' do
+      before do
+        create(:lunch, consumed_after: Date.new(year, month - 1))
+      end
+
+      it { is_expected.to be_empty }
+    end
+
+    context 'when one lunch exists for previous month and  one lunch for the requested month exists' do
+      let(:lunch_in_previous_month) { create(:lunch, consumed_after: Date.new(year, month - 1)) }
+      let(:lunch_in_current_month) { create(:lunch, consumed_after: Date.new(year, month)) }
+
+      it 'contains the lunch in the requested month' do
+        expect(result).to match_array([lunch_in_current_month])
+      end
+    end
+
+    context 'when one lunch exists in the middle of the requested month' do
+      let(:lunch_in_current_month) { create(:lunch, consumed_after: Date.new(year, month, 15)) }
+
+      it 'contains the lunch in the requested month' do
+        expect(result).to match_array([lunch_in_current_month])
+      end
+    end
+  end
+
   describe '.exists_for_month?' do
     subject { described_class.exists_for_month?(year, month) }
 
