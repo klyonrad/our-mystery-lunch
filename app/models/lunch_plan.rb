@@ -8,7 +8,7 @@ class LunchPlan
   end
 
   def self.exists_for_month?(year, month)
-    Lunch.where(consumed_after: Date.new(year, month)..Date.new(year, month)).any?
+    Lunch.where(consumed_after: Date.new(year, month)..Date.new(year, month).end_of_month).any?
   end
 
   def self.past_lunches
