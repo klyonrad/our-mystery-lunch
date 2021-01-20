@@ -6,7 +6,7 @@ class CreateMysteryLunch
     @year = year
     @month = month
     @lunch_repo = lunch_repo
-    @remaining_partner_pool = @given_employees.shuffle # increase randomness and leave given employees untouched
+    @remaining_partner_pool = PartnerPool.new(@given_employees)
     @lunches = []
   end
 
@@ -18,17 +18,9 @@ class CreateMysteryLunch
 
   def select_lunch_partners
     while @remaining_partner_pool.any?
-      amount_of_lunch_participants =
-        if @remaining_partner_pool.size == 3
-          3
-        else
-          2
-        end
-      new_lunch_participants = @remaining_partner_pool.sample(amount_of_lunch_participants)
-      @lunches.append(lunch_for_employees(new_lunch_participants))
-      new_lunch_participants.each do |employee|
-        @remaining_partner_pool.delete(employee)
-      end
+      @lunches.append(
+        lunch_for_employees(@remaining_partner_pool.grab_partners)
+      )
     end
 
     @lunches
@@ -36,6 +28,7 @@ class CreateMysteryLunch
 
   private
 
+  # @param [Employee] new_lunch_participants
   def lunch_for_employees(new_lunch_participants)
     lunch_participations = new_lunch_participants.map do |employee|
       { employee: employee }
