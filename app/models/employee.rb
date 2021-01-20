@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'faker'
+
 class Employee < ApplicationRecord
   DEPARTMENTS = %w[operations sales marketing risk management finance HR development data].freeze
 
@@ -7,4 +9,19 @@ class Employee < ApplicationRecord
   validates_presence_of :department
 
   scope :active, -> { where(deleted_at: nil) }
+
+  def self.generate_fake
+    DEPARTMENTS.without('management', 'sales').each do |department_name|
+      rand(5..10).times do
+        create(department: department_name, nick_name: Faker::FunnyName.unique.name)
+      end
+    end
+    15.times do
+      create(department: 'sales', nick_name: Faker::Name.unique.name)
+    end
+
+    rand(3..5).times do
+      create(department: 'management', nick_name: Faker::DcComics.unique.hero)
+    end
+  end
 end
