@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 class CreateMysteryLunch
-  def initialize(employees, year: Time.current.year, month: Time.current.month, lunch_repo: LunchPlan)
+  def initialize(employees, year: Time.current.year, month: Time.current.month,
+                 lunch_repo: LunchPlan, partner_pool: PartnerPool)
     @given_employees = employees
     @year = year
     @month = month
     @lunch_repo = lunch_repo
-    @remaining_partner_pool = PartnerPool.new(@given_employees)
+    @remaining_partner_pool = partner_pool.new(@given_employees)
     @lunches = []
   end
 
