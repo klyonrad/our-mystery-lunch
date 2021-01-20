@@ -9,9 +9,13 @@ class PartnerPool
   # @return [Object]
   def grab_partners
     @grabbed_partners = []
-    @grabbed_partners << @remaining_partner_pool.sample
+    # Sampling someone from most frequent department first reduces the chance
+    # of exhausting the randomness.
+    @grabbed_partners << from_most_frequent_department.sample
     (partner_amount - 1).times do
-      @grabbed_partners << potential_partners.sample
+      new_partner = potential_partners.sample
+
+      @grabbed_partners << new_partner
     end
 
     reduce_remaining_pool
@@ -23,6 +27,14 @@ class PartnerPool
   end
 
   private
+
+  def from_most_frequent_department
+    @remaining_partner_pool.select { |employee| employee.department == most_frequent_department }
+  end
+
+  def most_frequent_department
+    @remaining_partner_pool.map(&:department).tally.min_by { |_key, value| -value }.first
+  end
 
   def potential_partners
     @remaining_partner_pool.reject do |employee|
