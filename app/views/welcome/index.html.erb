@@ -12,3 +12,20 @@
     </li>
   <% end %>
 </ul>
+
+<h2>
+  Past Lunches
+</h2>
+
+<% @past_lunches.each do |past_lunchplan| %>
+  <h3>
+    <%= past_lunchplan.months_ago %> months ago
+  </h3>
+  <ul>
+    <% past_lunchplan.lunch_plan.each do |lunch| %>
+      <li>
+        <%= lunch.employees_text %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
