@@ -23,8 +23,8 @@ describe LunchPlan do
     end
 
     context 'when one lunch exists for previous month and  one lunch for the requested month exists' do
-      let(:lunch_in_previous_month) { create(:lunch, consumed_after: Date.new(year, month - 1)) }
-      let(:lunch_in_current_month) { create(:lunch, consumed_after: Date.new(year, month)) }
+      let!(:lunch_in_previous_month) { create(:lunch, consumed_after: Date.new(year, month - 1)) }
+      let!(:lunch_in_current_month) { create(:lunch, consumed_after: Date.new(year, month)) }
 
       it 'contains the lunch in the requested month' do
         expect(result).to match_array([lunch_in_current_month])
@@ -32,7 +32,16 @@ describe LunchPlan do
     end
 
     context 'when one lunch exists in the middle of the requested month' do
-      let(:lunch_in_current_month) { create(:lunch, consumed_after: Date.new(year, month, 15)) }
+      let!(:lunch_in_current_month) { create(:lunch, consumed_after: Date.new(year, month, 15)) }
+
+      it 'contains the lunch in the requested month' do
+        expect(result).to match_array([lunch_in_current_month])
+      end
+    end
+
+    context 'when one lunch exists for next month and  one lunch for the requested month exists' do
+      let!(:lunch_in_month_after) { create(:lunch, consumed_after: Date.new(year, month).next_month) }
+      let!(:lunch_in_current_month) { create(:lunch, consumed_after: Date.new(year, month)) }
 
       it 'contains the lunch in the requested month' do
         expect(result).to match_array([lunch_in_current_month])
