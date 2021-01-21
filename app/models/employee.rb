@@ -30,8 +30,14 @@ class Employee < ApplicationRecord
 
   def lunched_with_recently?(other_employee)
     other_employee.in?(
-      lunch_partners_since(Date.current.months_ago(3).beginning_of_month)
+      lunch_partners_since(Date.current.months_ago(3))
     )
+  end
+
+  def lunched_with_percentage
+    potential_partners_count = self.class.active.where.not(department: department).size
+    lunch_partner_count = lunch_partners_since(Date.current.months_ago(12)).length
+    (lunch_partner_count.to_f / potential_partners_count) * 100
   end
 
   private
@@ -42,6 +48,6 @@ class Employee < ApplicationRecord
   end
 
   def lunches_since(date)
-    lunches.where(consumed_after: date..).includes(lunch_participations: :employee)
+    lunches.where(consumed_after: date.beginning_of_month..).includes(lunch_participations: :employee)
   end
 end
