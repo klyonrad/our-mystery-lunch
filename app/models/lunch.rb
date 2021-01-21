@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Lunch < ApplicationRecord
-  has_many :lunch_participations
+  has_many :lunch_participations, dependent: :destroy
   accepts_nested_attributes_for :lunch_participations
 
   validates_presence_of :consumed_after
@@ -18,5 +18,9 @@ class Lunch < ApplicationRecord
 
   def add_lunchee(new_lunchee)
     lunch_participations.create(employee: new_lunchee)
+  end
+
+  def current_month?
+    consumed_after.month == Time.current.month
   end
 end
