@@ -13,7 +13,7 @@ class PartnerPool
     # of exhausting the randomness.
     @grabbed_partners << from_most_frequent_department.sample
     @grabbed_partners << potential_partners_not_met_recently.sample
-    if partner_amount.odd?
+    if @remaining_partner_pool.length.odd?
       # When making three people lunch it is not required that the third person did not met the others recently
       @grabbed_partners << potential_partners.sample
     end
@@ -50,13 +50,5 @@ class PartnerPool
 
   def reduce_remaining_pool
     @grabbed_partners.each { |employee| @remaining_partner_pool.delete(employee) }
-  end
-
-  def partner_amount
-    if @remaining_partner_pool.length.odd?
-      3
-    else
-      2
-    end
   end
 end
