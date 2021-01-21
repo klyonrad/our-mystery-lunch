@@ -7,6 +7,13 @@ describe PartnerPool do
     let(:subject) { described_class.new(employees) }
     def subject_call = subject.grab_partners
 
+    before do
+      # work around figuring out better mocking :(
+      employees.each do |employee|
+        allow(employee).to receive(:lunched_with_recently?).and_return(false)
+      end
+    end
+
     context 'given 24 employees from six departments' do
       let(:employees) do
         %w[HR risk management sales development data].map do |department|

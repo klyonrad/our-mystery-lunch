@@ -12,10 +12,10 @@ class PartnerPool
     # Sampling someone from most frequent department first reduces the chance
     # of exhausting the randomness.
     @grabbed_partners << from_most_frequent_department.sample
-    (partner_amount - 1).times do
-      new_partner = potential_partners.sample
-
-      @grabbed_partners << new_partner
+    @grabbed_partners << potential_partners_not_met_recently.sample
+    if partner_amount.odd?
+      # When making three people lunch it is not required that the third person did not met the others recently
+      @grabbed_partners << potential_partners.sample
     end
 
     reduce_remaining_pool
@@ -34,6 +34,12 @@ class PartnerPool
 
   def most_frequent_department
     @remaining_partner_pool.map(&:department).tally.min_by { |_key, value| -value }.first
+  end
+
+  def potential_partners_not_met_recently
+    potential_partners.reject do |employee|
+      @grabbed_partners.first.lunched_with_recently?(employee)
+    end
   end
 
   def potential_partners
