@@ -36,8 +36,8 @@ Just hitting it again typically works (I didn't want to do this in code to avoid
 
 ## Features omitted
 
-The feature *authentication* is not present.
-Did not consider it relevant to show that I can click together `devise` and I don't have infinite time
+The features *authentication for employee management* and filtering by department are not implemented.
+Sorry I don't have infinite time.
 
 ## Mystery feature
 
