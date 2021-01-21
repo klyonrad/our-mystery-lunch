@@ -22,8 +22,9 @@ class EmployeesController < ApplicationController
   # POST /employees
   def create
     @employee = Employee.new(employee_params)
-
-    if @employee.save
+    add_process_result = EmployeeAddition.new(@employee).execute
+    @employee = add_process_result.employee
+    if add_process_result.success
       redirect_to @employee, notice: 'Employee was successfully created.'
     else
       render :new

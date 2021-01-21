@@ -7,7 +7,9 @@ RSpec.describe 'Employee management', type: :system do
     driven_by(:selenium_chrome_headless)
   end
 
-  example 'user creates employee and sees it in the list' do
+  example 'user creates employee and sees it in the list and in the lunches' do
+    lunch = create(:lunch, consumed_after: Time.current.beginning_of_month)
+    2.times { create(:lunch_participation, lunch: lunch) }
     visit 'employees/new'
     expect(page).to have_content 'New Employee'
 
@@ -20,6 +22,9 @@ RSpec.describe 'Employee management', type: :system do
     expect(page).to have_content 'Show'
     expect(page).to have_content 'Edit'
     expect(page).to have_content 'Destroy'
+    expect(page).to have_content 'John Doe'
+
+    visit '/'
     expect(page).to have_content 'John Doe'
   end
 
