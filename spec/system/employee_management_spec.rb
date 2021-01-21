@@ -67,4 +67,17 @@ RSpec.describe 'Employee management', type: :system do
     expect(page).to have_content 'Employee was successfully destroyed.'
     expect(page).not_to have_content 'John Doe'
   end
+
+  context 'when fake employees and fake lunches are generated' do
+    before do
+      Employee.generate_fake
+      LunchPlanHistoryGenerator.new.execute
+    end
+
+    it 'works' do
+      visit 'employees'
+
+      expect(page).to have_content 'Lunched with percentage'
+    end
+  end
 end
