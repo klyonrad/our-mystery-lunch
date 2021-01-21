@@ -21,6 +21,7 @@ describe EmployeeTermination do
         let(:lunch) do
           create(:lunch, consumed_after: Time.current.beginning_of_month)
         end
+
         before do
           create(:lunch_participation, employee: deleted_employee, lunch: lunch)
           create_list(:lunch_participation, 2, lunch: lunch)
@@ -34,8 +35,25 @@ describe EmployeeTermination do
         end
       end
 
-      context 'when employee has one lunch partner' do
-        it 'removes them from the lunch and the partner comes to a random lunch'
+      context 'when employee has one lunch partner and other lunches exist' do
+        let(:deleted_employee) { create(:employee) }
+        let(:remaining_employee_in_affected_lunch) { create(:employee) }
+        let(:lunch) do
+          create(:lunch, consumed_after: Time.current.beginning_of_month)
+        end
+        let!(:other_lunch) { create(:lunch, :with_two_participants) }
+
+        before do
+          create(:lunch_participation, employee: deleted_employee, lunch: lunch)
+          create(:lunch_participation, lunch: lunch, employee: remaining_employee_in_affected_lunch)
+        end
+
+        it 'removes them from the lunch and the partner comes to a random lunch' do
+          subject.execute
+
+          expect(other_lunch.reload.employees.size).to eq(3)
+          expect(other_lunch.employees).to include(remaining_employee_in_affected_lunch)
+        end
       end
     end
   end
