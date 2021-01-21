@@ -19,4 +19,8 @@ class Lunch < ApplicationRecord
   def add_lunchee(new_lunchee)
     lunch_participations.create(employee: new_lunchee)
   end
+
+  def current_month?
+    consumed_after.month == Time.current.month
+  end
 end
