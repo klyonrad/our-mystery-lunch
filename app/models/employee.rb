@@ -5,6 +5,9 @@ require 'faker'
 class Employee < ApplicationRecord
   DEPARTMENTS = %w[operations sales marketing risk management finance HR development data].freeze
 
+  has_many :lunch_participations
+  has_many :lunches, through: :lunch_participations
+
   validates_presence_of :nick_name
   validates_presence_of :department
 
@@ -23,5 +26,22 @@ class Employee < ApplicationRecord
     rand(3..5).times do
       create(department: 'management', nick_name: Faker::DcComics.unique.hero)
     end
+  end
+
+  def lunched_with_recently?(other_employee)
+    other_employee.in?(
+      lunch_partners_since(Date.current.months_ago(3).beginning_of_month)
+    )
+  end
+
+  private
+
+  def lunch_partners_since(date)
+    lunches_since(date)
+      .map(&:employees).flatten.reject { |employee| employee == self }
+  end
+
+  def lunches_since(date)
+    lunches.where(consumed_after: date..).includes(lunch_participations: :employee)
   end
 end
