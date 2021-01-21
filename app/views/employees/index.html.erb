@@ -1,6 +1,7 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Employees</h1>
+<h2>RESTRICTED AREA</h2>
 
 <table>
   <thead>
@@ -17,7 +18,10 @@
       <tr>
         <td><%= employee.nick_name %></td>
         <td><%= employee.department %></td>
-        <td><%= employee.lunched_with_percentage %> %</td>
+        <td>
+          <%= number_to_percentage(employee.lunched_with_percentage) %>
+          <%= " (with #{employee.lunches.size} lunches)" %>
+        </td>
         <td><%= link_to 'Show', employee %></td>
         <td><%= link_to 'Edit', edit_employee_path(employee) %></td>
         <td><%= link_to 'Destroy', employee, method: :delete, data: { confirm: 'Are you sure?' } %></td>
