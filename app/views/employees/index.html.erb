@@ -16,7 +16,10 @@
   <tbody>
     <% @employees.each do |employee| %>
       <tr>
-        <td><%= employee.nick_name %></td>
+        <td>
+          <%= image_tag(employee.image_url) %>
+          <%= employee.nick_name %>
+        </td>
         <td><%= employee.department %></td>
         <td>
           <%= number_to_percentage(employee.lunched_with_percentage) %>

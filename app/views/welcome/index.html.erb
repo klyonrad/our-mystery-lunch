@@ -8,6 +8,9 @@
 <ul>
   <% @lunch_plan.each do |lunch| %>
     <li>
+      <% lunch.employee_image_urls.each do |url| %>
+        <%= image_tag(url) %>
+      <% end %>
       <%= lunch.employees_text %>
     </li>
   <% end %>
