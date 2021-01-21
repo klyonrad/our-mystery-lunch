@@ -19,7 +19,7 @@ class LunchPlan
         months_ago: n,
         lunch_plan: lunches_in_month(past_year, past_month)
       )
-    end.reverse
+    end
   end
 
   # @param [Lunch] lunches - In memory lunch objects, hopefully with their participants :)
