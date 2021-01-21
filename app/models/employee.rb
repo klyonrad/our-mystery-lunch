@@ -36,7 +36,7 @@ class Employee < ApplicationRecord
 
   def lunched_with_percentage
     potential_partners_count = self.class.active.where.not(department: department).size
-    lunch_partner_count = lunch_partners_since(Date.current.months_ago(12)).length
+    lunch_partner_count = lunch_partners_since(Date.current.months_ago(12)).uniq.length
     (lunch_partner_count.to_f / potential_partners_count) * 100
   end
 
