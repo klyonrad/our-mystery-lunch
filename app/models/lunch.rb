@@ -10,6 +10,10 @@ class Lunch < ApplicationRecord
     lunch_participations.map(&:employee)
   end
 
+  def employee_image_urls
+    employees.map(&:image_url)
+  end
+
   def employees_text
     employees.map do |employee|
       "#{employee.nick_name} (#{employee.department})"

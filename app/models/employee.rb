@@ -40,6 +40,11 @@ class Employee < ApplicationRecord
     (lunch_partner_count.to_f / potential_partners_count) * 100
   end
 
+  def image_url
+    name_hash = Digest::MD5.hexdigest("#{nick_name}#{department}".downcase)
+    "https://www.gravatar.com/avatar/#{name_hash}?d=monsterid"
+  end
+
   private
 
   def lunch_partners_since(date)
