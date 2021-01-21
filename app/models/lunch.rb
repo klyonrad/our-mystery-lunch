@@ -15,4 +15,8 @@ class Lunch < ApplicationRecord
       "#{employee.nick_name} (#{employee.department})"
     end.join(', ')
   end
+
+  def add_lunchee(new_lunchee)
+    lunch_participations.create(employee: new_lunchee)
+  end
 end

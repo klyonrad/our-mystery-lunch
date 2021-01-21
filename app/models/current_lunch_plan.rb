@@ -19,11 +19,11 @@ class CurrentLunchPlan
     @lunch_repo.exists_for_month?(@year, @month)
   end
 
-  private
-
   def show_lunches
     @lunch_repo.lunches_in_month(@year, @month)
   end
+
+  private
 
   def generate_new_plan
     @random_lunch_generator_klass.new(Employee.active).make_new_lunch_plan
